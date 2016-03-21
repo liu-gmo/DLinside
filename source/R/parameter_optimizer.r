@@ -38,7 +38,7 @@ mu <- 0.9
 v <- NA
 m <- NA
 cache <- NA
-decayRate <- 0.1
+decayRate <- 0.99
 beta1 <- 0.9
 beta2 <- 0.995
 
@@ -61,7 +61,7 @@ trace.level <- 10
 paraOptim <- function(dt, y, theta, method){
   trace.df <- NULL
   
-  pre_loss <- NaN
+  #pre_loss <- NaN
   for(i in 0:maxIteration){
     loss <- forward(theta, dt, y, lambda)
     dx <- gradient(theta, dt, y, lambda)
@@ -74,9 +74,9 @@ paraOptim <- function(dt, y, theta, method){
     delta <- paraUpdate(method, dx, i+1)
     theta <- theta + delta
     
-    #if(sqrt(sum(delta ^ 2)) < tolerance) break
-    if((!is.nan(pre_loss)) && abs(pre_loss - loss) < tolerance) break
-    pre_loss <- loss
+    if(sqrt(sum(delta ^ 2)) < tolerance) break
+    #if((!is.nan(pre_loss)) && abs(pre_loss - loss) < tolerance) break
+    #pre_loss <- loss
   }
   
   if(i %% maxIteration != 0){
