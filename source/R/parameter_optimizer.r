@@ -169,6 +169,9 @@ train(X, y, "AdaGrad")
 train(X, y, "RmsProp")
 train(X, y, "Adam")
 
+plotRes("epoch")
+plotRes("position")
+
 res <- optim(initialTheta, forward, gradient, X, y, lambda, method = "BFGS", control = list(maxit = maxIteration, trace=3))
 res$par
 res$value
@@ -249,5 +252,3 @@ plotRes <- function(type){
   
 }
 
-plotRes("epoch")
-plotRes("position")
