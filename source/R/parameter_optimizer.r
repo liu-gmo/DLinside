@@ -34,7 +34,7 @@ mapFeature <- function(X1, X2, degree) {
 lambda <- 1
 learningRate <- 1e-1
 maxIteration <- 10000
-tolerance <- 1e-4
+tolerance <- 1e-6
 
 mu <- 0.9
 v <- NA
@@ -217,13 +217,13 @@ plotRes <- function(type){
     px <- td$epoch
     py <- td$loss  
     
-    plot(x=px, y=py, col=color_arr[1], type="l", main="Convergence Performance", pch=0, xlab="epoch", ylab="loss", lty=1, lwd=2, xlim=c(0,300))
+    plot(x=px, y=py, col=color_arr[1], type="l", main="Convergence Performance", pch=0, xlab="epoch", ylab="loss", lty=1, lwd=2, xlim=c(0,500))
   }
   else{
     px <- td$theta2
     py <- td$theta3  
     
-    xrange[2] <- xrange[2] + (xrange[2]-xrange[1])*0.2 #preserve space for legend
+    xrange[2] <- xrange[2] + (xrange[2]-xrange[1])*0.4 #preserve space for legend
     plot(x=px, y=py, col=color_arr[1], type="l", main="Convergence Performance", pch=0, xlab="para 1", ylab="para2", lty=1, lwd=2,xlim=xrange,ylim=yrange)
     
     points(x=px[1], y=py[1], col="black", type='p', lwd=2, lty=1, pch=16, cex=2)  
