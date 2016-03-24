@@ -1,3 +1,4 @@
+# ***************************** Neural Network ***************************
 sigmoid <- function(z) {
   return(1/(1 + exp(-z)))
 }
@@ -28,11 +29,12 @@ mapFeature <- function(X1, X2, degree) {
   return(out)
 }
 
+# ***************************** Parameter Optimizer ***************************
 
 lambda <- 1
 learningRate <- 1e-1
 maxIteration <- 10000
-tolerance <- 1e-8
+tolerance <- 1e-4
 
 mu <- 0.9
 v <- NA
@@ -176,7 +178,7 @@ res$par
 res$value
 res$counts
 
-# **************************** visulization ****************************
+# **************************** Visulization ****************************
 
 plotRes <- function(type){
   #color_arr <- NULL;
