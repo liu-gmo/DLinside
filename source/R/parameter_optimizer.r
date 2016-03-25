@@ -170,7 +170,7 @@ train(X, y, "RmsProp")
 train(X, y, "Adam")
 
 plotRes("epoch")
-plotRes("position")
+plotRes("position", paraX.ind=2, paraY.ind = 3) #para.ind = 1 is the bias parameter
 
 res <- optim(initialTheta, forward, gradient, X, y, lambda, method = "BFGS", control = list(maxit = maxIteration, trace=3))
 res$par
@@ -182,8 +182,9 @@ res$value
 res$counts
 
 # **************************** Visulization ****************************
-
-plotRes <- function(type){
+maxEpoch <- 500
+plotRes <- function(type, paraX.ind=2, paraY.ind=3) #show loss over paraX when set paraY.ind = 0
+{
   #color_arr <- NULL;
   xrange <- NA
   yrange <- NA
@@ -197,17 +198,17 @@ plotRes <- function(type){
     xx <- trace.log[i,5]
     td <- as.data.frame(xx$trace)
     if(is.na(xrange)) {
-      xrange <- c(min(td$theta2),max(td$theta2))
+      xrange <- c(min(td[,2+paraX.ind]),max(td[,2+paraX.ind]))
     } 
     else{
-      xrange = c(min(xrange[1], min(td$theta2)),max(xrange[2], max(td$theta2)))
+      xrange = c(min(xrange[1], min(td[,2+paraX.ind])),max(xrange[2], max(td[,2+paraX.ind])))
     }
     
     if(is.na(yrange)){
-      yrange <- c(min(td$theta3),max(td$theta3))
+      yrange <- c(min(td[,2+paraY.ind]),max(td[,2+paraY.ind]))
     }
     else{
-      yrange = c(min(yrange[1], min(td$theta3)),max(yrange[2], max(td$theta3)))  
+      yrange = c(min(yrange[1], min(td[,2+paraY.ind])),max(yrange[2], max(td[,2+paraY.ind])))  
     }
   }
   
@@ -217,16 +218,17 @@ plotRes <- function(type){
     px <- td$epoch
     py <- td$loss  
     
-    plot(x=px, y=py, col=color_arr[1], type="l", main="Convergence Performance", pch=0, xlab="epoch", ylab="loss", lty=1, lwd=2, xlim=c(0,500))
+    plot(x=px, y=py, col=color_arr[1], type="l", main="Convergence Performance", pch=0, xlab="epoch", ylab="loss", lty=1, lwd=2, xlim=c(0,maxEpoch))
   }
   else{
-    px <- td$theta2
-    py <- td$theta3  
+    px <- td[,2+paraX.ind]
+    py <- td[,2+paraY.ind]  
     
     xrange[2] <- xrange[2] + (xrange[2]-xrange[1])*0.4 #preserve space for legend
     plot(x=px, y=py, col=color_arr[1], type="l", main="Convergence Performance", pch=0, xlab="para 1", ylab="para2", lty=1, lwd=2,xlim=xrange,ylim=yrange)
     
-    points(x=px[1], y=py[1], col="black", type='p', lwd=2, lty=1, pch=16, cex=2)  
+    points(x=px[1], y=py[1], col="black", type='p', lwd=2, lty=1, pch=16, cex=2)  #start Point
+    text(px[1],py[1], labels="start", adj=c(-0.3, 0.2))
   }
   
   for(i in 2:nrow(trace.log)){
@@ -238,13 +240,13 @@ plotRes <- function(type){
       py <- td$loss
     }
     else{
-      px <- td$theta2
-      py <- td$theta3
+      px <- td[,2+paraX.ind]
+      py <- td[,2+paraY.ind]
     }
     points(x=px, y=py, col=color_arr[i], type='l', lwd=2, lty=1, pch=0)  
     
     fp <- nrow(td)
-    points(x=px[fp], y=py[fp], col=color_arr[i], type='p', lwd=2, lty=1, pch=13,cex=1.5)  #final point
+    points(x=px[fp], y=py[fp], col="black", type='p', lwd=2, lty=1, pch=13,cex=1.5)  #final point
   }
   
   legend("topright", legend = labels, col = color_arr, 
